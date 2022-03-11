@@ -1,0 +1,84 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <unordered_map>
+#include <set>
+#include <iostream>
+
+using namespace std;
+
+int GetUnderCount(int thisNumber);
+int GetUpperCount(int thisNumber);
+
+unordered_map<int, set<int>> winMap;     //key가 value에게 이김
+unordered_map<int, set<int>> loseMap;    //key가 value에게 짐
+
+
+int solution(int n, vector<vector<int>> results) {
+    int answer = 0;
+    
+    for(int i = 0 ; i < results.size() ; i++){
+        winMap[results[i][0]].insert(results[i][1]);
+        loseMap[results[i][1]].insert(results[i][0]);
+    }
+    
+    for(int i = 1 ; i <= n ; i++){
+        int count = 0;
+        
+        count += GetUnderCount(i);   //자신 아래 사람 수
+        count += GetUpperCount(i);   //자신 위 사람 수
+        count += 1;                  //자신
+    
+        if(count == n)
+            answer++;
+    }
+ 
+    return answer;
+}
+
+int GetUnderCount(int thisNumber){
+    queue<int> q;
+    q.push(thisNumber);
+    unordered_map<int, int> checkMap;
+    
+    int count = 0;
+    
+    while(q.size() != 0){
+        int nowNumber = q.front();
+        q.pop();
+        
+        for(auto iter = winMap[nowNumber].begin() ; iter != winMap[nowNumber].end() ; iter++){
+            if(checkMap[*iter] == 0){
+                checkMap[*iter] = 1;
+                count++;
+                q.push(*iter);
+            }
+        }
+    }
+    
+    return count;
+}
+    
+
+int GetUpperCount(int thisNumber){
+    queue<int> q;
+    q.push(thisNumber);
+    unordered_map<int, int> checkMap;
+    
+    int count = 0;
+    
+    while(q.size() != 0){
+        int nowNumber = q.front();
+        q.pop();
+        
+        for(auto iter = loseMap[nowNumber].begin() ; iter != loseMap[nowNumber].end() ; iter++){
+            if(checkMap[*iter] == 0){
+                checkMap[*iter] = 1;
+                count++;
+                q.push(*iter);
+            }
+        }
+    }
+    
+    return count;
+}
