@@ -1,0 +1,132 @@
+#include <iostream>
+#include <vector>
+
+
+
+using namespace std;
+
+int n, m;
+
+int dy[9] = { 0, 0, -1, -1, -1, 0, 1, 1, 1 };
+int dx[9] = { 0, -1, -1, 0, 1, 1, 1, 0, -1 };
+
+int copyY[4] = { 1, 1, -1, -1 };
+int copyX[4] = { -1, 1, 1, -1 };
+
+int map[51][51] = { 0, };
+int beforeCloudMap[51][51] = { 0, };
+
+vector<pair<int, int>> command;
+vector<pair<int, int>> cloudLocation;// y, x
+
+
+void ResetBeforeCloudMap() {
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			beforeCloudMap[i][j] = 0;
+		}
+	}
+}
+
+
+
+int main() {
+
+	cin.tie();
+	cout.tie();
+
+	cin >> n >> m;
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			int temp;
+			cin >> temp;
+			map[i][j] = temp;
+		}
+	}
+
+	for (int i = 0; i < m; i++) {
+		int temp1, temp2;
+		cin >> temp1 >> temp2;
+		command.push_back({ temp1, temp2 });
+	}
+
+	cloudLocation.push_back({ n, 1 });
+	cloudLocation.push_back({ n, 2 });
+	cloudLocation.push_back({ n - 1, 1 });
+	cloudLocation.push_back({ n - 1, 2 });
+
+	for (int repeatNumber = 0 ; repeatNumber < m; repeatNumber++) {
+
+		ResetBeforeCloudMap();
+
+		for (int i = 0; i < cloudLocation.size(); i++) {
+			for (int j = 0; j < command[repeatNumber].second; j++) {
+				cloudLocation[i].first += dy[command[repeatNumber].first];
+				cloudLocation[i].second += dx[command[repeatNumber].first];
+
+				if (cloudLocation[i].first <= 0)
+					cloudLocation[i].first = n;
+				else if (cloudLocation[i].first >= n + 1)
+					cloudLocation[i].first = 1;
+
+				if (cloudLocation[i].second <= 0)
+					cloudLocation[i].second = n;
+				else if (cloudLocation[i].second >= n + 1)
+					cloudLocation[i].second = 1;
+
+			}
+		}
+
+		//2번째 조건
+		for (int i = 0; i < cloudLocation.size(); i++) {
+			map[cloudLocation[i].first][cloudLocation[i].second]++;
+			beforeCloudMap[cloudLocation[i].first][cloudLocation[i].second] = 1;
+		}
+
+		//4번째 조건
+		for (int i = 0; i < cloudLocation.size(); i++) {
+			for (int j = 0; j < 4; j++) {
+				int newLocY = cloudLocation[i].first + copyY[j];
+				int newLocX = cloudLocation[i].second + copyX[j];
+
+				if (newLocY >= 1 && newLocY <= n && newLocX >= 1 && newLocX <= n)
+				{
+					if (map[newLocY][newLocX] >= 1) {
+						map[cloudLocation[i].first][cloudLocation[i].second]++;
+					}
+				}
+
+			}
+		}
+
+		//3번째 조건
+		cloudLocation.clear();
+
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (map[i][j] >= 2) {
+					if (beforeCloudMap[i][j] == 0) {
+						cloudLocation.push_back({ i, j });
+						map[i][j] = map[i][j] - 2;
+					}
+				}
+			}
+		}
+	}
+
+	int answer = 0;
+
+
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			answer = answer + map[i][j];
+		}
+	}
+
+	cout << answer;
+
+
+	return 0;
+}
