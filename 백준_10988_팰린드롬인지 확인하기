@@ -22,3 +22,35 @@ int main() {
 
 	return 0;
 }
+
+/*
+아래는 reverse를 사용한 코드이다.
+
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+
+	string s;
+	string temp;
+
+	cin >> s;
+	temp = s;
+
+	reverse(temp.begin(), temp.end());
+
+	if (temp == s) {
+		cout << 1;
+	}
+	else {
+		cout << 0;
+	}
+
+	return 0;
+
+}
+
+
+*/
