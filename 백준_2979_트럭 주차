@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+
+int main() {
+
+	int fee[4];
+	int car = 0;
+	int beforeTime = 0;
+	int totalFee = 0;
+	vector<pair<int, int>> vec;
+
+	cin >> fee[1] >> fee[2] >> fee[3];
+
+	for (int i = 0; i < 3; i++) {
+		int inTime, outTime;
+		cin >> inTime >> outTime;
+		vec.push_back({ inTime, 0 });	// 0 : 입차
+		vec.push_back({ outTime, 1 });	// 1 : 출차
+	}
+
+
+	sort(vec.begin(), vec.end());
+
+
+	for (int i = 0; i < vec.size(); i++) {
+		totalFee += (vec[i].first - beforeTime) * fee[car] * car;	// 가격 계산해서 더해주기
+		if (vec[i].second == 0) car++;	// 입차
+		else car--;						// 출차
+		beforeTime = vec[i].first;
+	}
+
+	cout << totalFee;
+
+	return 0;
+}
