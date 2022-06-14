@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+int main() {
+
+	int n;
+	vector<char> vec;
+	unordered_map<char, int> map;
+
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		string temp;
+		cin >> temp;
+		map[temp[0]]++;
+	}
+
+	for (int i = 'a'; i <= 'z'; i++) {
+		if (map[i] >= 5) {
+			vec.push_back(i);
+		}
+	}
+
+	if (vec.size() == 0) {
+		cout << "PREDAJA";
+	}
+	else {
+		for (int i = 0; i < vec.size(); i++) {
+			cout << (char)vec[i];
+		}
+	}
+
+	return 0;
+}
