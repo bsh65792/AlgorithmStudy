@@ -1,0 +1,24 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+
+	string st;
+
+	cin >> st;
+	int i = 0;
+	int j = st.size() - 1;
+	do {
+		if (st[i] != st[j]) {
+			cout << 0;
+			return 0;
+		}
+		i++;
+		j--;
+	} while (i < j);
+
+	cout << 1;
+
+	return 0;
+}
