@@ -24,9 +24,7 @@ int main() {
 
 
 	for (int i = k; i < n; i++) {
-		if (sum > largestSum) {
-			largestSum = sum;
-		}
+		largestSum = max(largestSum, sum);
 		
 		sum -= vec[i - k];
 		sum += vec[i];
