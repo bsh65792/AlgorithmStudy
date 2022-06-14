@@ -1,0 +1,35 @@
+//do-while permutation 방식을 이용해서 퍼뮤테이션을 돌리면서 매번 앞에 있는 7개의 원소만 비교하였음
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int a[9];
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	for (int i = 0; i < 9; i++) {
+		cin >> a[i];
+	}
+
+	sort(a, a + 9);		//배열은 포인터이기 때문에 이렇게 첫 포인터와 끝 포인터를 넣어주면 됨
+
+	do {
+		int sum = 0;
+		for (int i = 0; i < 7; i++) {
+			sum += a[i];
+		}
+		for (int i = 0; i < 9; i++) {
+			cout << a[i] << " ";
+		}
+		cout << endl;
+		if (sum == 100) break;
+	} while (next_permutation(a, a + 9));
+
+	return 0;
+}
