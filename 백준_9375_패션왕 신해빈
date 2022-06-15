@@ -1,0 +1,57 @@
+#include <iostream>
+#include <unordered_map>
+#include <sstream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	vector<int> result;
+
+	int testCase;
+
+	cin >> testCase;
+
+	for (int testCaseCnt = 1; testCaseCnt <= testCase; testCaseCnt++) {
+		unordered_map<string, vector<string>> map;
+		int sum = 1;
+		vector<string> vec;
+		int num;
+		cin >> num;
+		for (int i = 0; i < num; i++) {
+			string temp;
+			cin.ignore();
+			getline(cin, temp);
+			stringstream ss;
+			ss.str(temp);
+			string part;
+			string name;
+			getline(ss, name, ' ');
+			getline(ss, part, ' ');
+			if (map[part].size() == 0) {
+				vec.push_back(part);
+			}
+			map[part].push_back(name);
+		}
+
+		for (int i = 0; i < vec.size(); i++) {
+			sum *= (map[vec[i]].size() + 1);
+		}
+
+		sum--;
+		result.push_back(sum);
+
+	}
+
+	for (int i = 0; i < result.size(); i++) {
+		cout << result[i] << "\n";
+	}
+
+
+	return 0;
+}
