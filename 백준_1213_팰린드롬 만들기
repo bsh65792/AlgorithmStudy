@@ -1,7 +1,55 @@
 /*
-코드 개판임..
+맨 아래 코드는 개판임.. 그래서 두개 버전 있음!
 */
 
+
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+int cnt[200] = { 0, };
+
+int main() {
+	string st;
+	int flag = 0;
+	char oddChar;
+	string ret;
+	
+	cin >> st;
+	for (auto m : st) cnt[m]++;
+	for (int i = 'A'; i <= 'Z'; i++) {
+		if (cnt[i] == 0) continue;
+		if (cnt[i] & 1) {
+			oddChar = (char)i;
+			flag++;
+			cnt[i]--;
+		}
+		if (flag == 2) break;
+
+		for (int j = 0; j < cnt[i] / 2; j++) {
+			ret += char(i);
+		}
+	}
+
+	string temp = ret;
+	reverse(temp.begin(), temp.end());
+	if (flag >= 2) cout << "I'm Sorry Hansoo\n";
+	else {
+		if (flag == 1) ret += oddChar;
+		ret.append(temp);
+
+		cout << ret;
+	}
+
+	return 0;
+}
+
+
+
+/*
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -102,3 +150,4 @@ int main() {
 
 	return 0;
 }
+*/
