@@ -1,0 +1,104 @@
+/*
+코드 개판임..
+*/
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+#include <unordered_map>
+
+
+using namespace std;
+
+unordered_map<char, int> map;
+
+void PrintImpossible() {
+	cout << "I'm Sorry Hansoo";
+}
+
+int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	string st;
+	cin >> st;
+	string newString = "";
+	string temp = "";
+	char tempChar = 'D';
+
+	for (int i = 0; i < st.length(); i++) {
+		map[st[i]]++;
+	}
+
+	int odd = 0;
+	int even = 0;
+
+	for (int i = 0; i < 30; i++) {
+		if (map[char(i + (int)'A')] == 0) continue;
+
+		if (map[char(i + (int)'A')] % 2 == 0) even++;
+		else {
+			odd++;
+			tempChar = char(i + (int)'A');
+		}
+	}
+	vector<char> charVector;
+	
+
+	if (st.length() % 2 == 0)
+	{
+		if (odd > 0) {
+			PrintImpossible();
+			return 0;
+		}
+		else {
+			for (int i = 0; i < 30; i++) {
+				if (map[char(i + (int)'A')] == 0) continue;
+
+				for (int j = 0; j < map[char(i + (int)'A')] / 2; j++) {
+					charVector.push_back(char(i + (int)'A'));
+				}
+			}
+		}
+	}
+	else {
+		if (odd != 1) {
+			PrintImpossible();
+			return 0;
+		}
+		else {
+			for (int i = 0; i < 30; i++) {
+				if (map[char(i + (int)'A')] == 0) continue;
+
+				if (map[char(i + (int)'A')] == 1) {
+					//tempChar = char(i + (int)'A');
+					continue;
+				}
+				for (int j = 0; j < map[char(i + (int)'A')] / 2; j++) {
+					charVector.push_back(char(i + (int)'A'));
+				}
+			}
+		}
+			
+	}
+
+	for (int i = 0; i < charVector.size(); i++) {
+		newString += charVector[i];
+	}
+	temp = newString;
+	reverse(temp.begin(), temp.end());
+
+	if (st.length() % 2 != 0) {
+		newString += tempChar;
+	}
+
+	newString += temp;
+
+	cout << newString;
+
+
+
+	return 0;
+}
