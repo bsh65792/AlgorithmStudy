@@ -1,0 +1,38 @@
+/*
+- stack을 이용해여 구현함.
+- 시각화 기법을 사용함!! 문제를 뒤집어 보거나 세워 보거나 등등을 해 보며 다양하게 생각해 본다.
+*/
+
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+int main() {
+	ios_base::sync_with_stdio;
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int n;
+	int cnt = 0;
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		string temp;
+		cin >> temp;
+		stack<char> st;
+		for (int j = 0; j < temp.length(); j++) {
+			if (st.size() > 0 && st.top() == temp[j]) {
+				st.pop();
+			}
+			else {
+				st.push(temp[j]);
+			}
+		}
+		if (st.size() == 0) cnt++;
+	}
+
+	cout << cnt;
+
+	return 0;
+}
