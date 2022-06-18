@@ -1,0 +1,71 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int map[101][101] = { 0, };
+int visited[101][101] = { 0, };
+int dy[4] = { -1, 0, 1, 0 };
+int dx[4] = { 0, -1, 0, 1 };
+int n;
+int largestHeight;
+int height;
+int largestAreaCnt;
+
+void DFS(int y, int x) {
+	visited[y][x] = 1;
+	int ny, nx;
+
+	for (int i = 0; i < 4; i++) {
+		ny = y + dy[i];
+		nx = x + dx[i];
+		if (ny < 0 || nx < 0 || ny >= n || nx >= n) continue;
+
+		if (map[ny][nx] > height && visited[ny][nx] == 0) {
+			DFS(ny, nx);
+		}
+
+	}
+}
+
+
+
+int main() {
+	largestHeight = -1;
+	largestAreaCnt = -1;
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cin >> map[i][j];
+			if (map[i][j] > largestHeight) {
+				largestHeight = map[i][j];
+			}
+		}
+	}
+
+	for (height = 0; height <= largestHeight; height++) {
+		int areaCnt = 0;
+		fill(&visited[0][0], &visited[0][0] + 101 * 101, 0);
+
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				if (visited[i][j] == 0 && map[i][j] > height) {
+					areaCnt++;
+					DFS(i, j);
+				}
+			}
+		}
+
+		if (areaCnt > largestAreaCnt) {
+			largestAreaCnt = areaCnt;
+		}
+	}
+
+	cout << largestAreaCnt;
+
+	
+
+	return 0;
+}
