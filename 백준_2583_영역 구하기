@@ -1,0 +1,76 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <vector>
+
+using namespace std;
+
+int map[101][101] = { 0, };
+int visited[101][101] = { 0, };
+int dy[4] = { -1, 0, 1, 0 };
+int dx[4] = { 0, -1, 0, 1 };
+int n, m, k;
+int area;
+
+void DFS(int y, int x) {
+	visited[y][x] = 1;
+	area++;
+
+	int ny, nx;
+
+	for (int i = 0; i < 4; i++) {
+		ny = y + dy[i];
+		nx = x + dx[i];
+
+		if (ny < 0 || nx < 0 || ny >= n || nx >= m) continue;
+
+		if (map[ny][nx] == 0 && visited[ny][nx] == 0) {
+			DFS(ny, nx);
+		}
+
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio;
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	priority_queue<int> q;
+	vector<int> vec;
+
+	cin >> n >> m >> k;
+
+	for (int i = 0; i < k; i++) {
+		int ay, ax, by, bx;
+		cin >> ax >> ay >> bx >> by;
+
+		for (int j = ay; j < by; j++) {
+			for (int k = ax; k < bx; k++) {
+				map[j][k] = 1;
+			}
+		}
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (map[i][j] == 0 && visited[i][j] == 0) {
+				area = 0;
+				DFS(i, j);
+				vec.push_back(area);
+			}
+		}
+	}
+
+	sort(vec.begin(), vec.end());
+
+	cout << vec.size() << "\n";
+
+	for (int i = 0; i < vec.size(); i++) {
+		cout << vec[i] << " ";
+	}
+
+
+
+	return 0;
+}
