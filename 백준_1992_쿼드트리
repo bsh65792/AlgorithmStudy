@@ -1,0 +1,85 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+vector<string> vec;
+string ans = "";
+int n;
+
+void dfs(int upper, int under, int left, int right);
+
+
+//조사하는 영역의 값이 전부 동일하면 해당 동일한 값을 반환, 동일하지 않으면 -1을 반환한다.
+int CheckAllNumberSame(int upper, int under, int left, int right) {
+	int number = 0;
+	char firstChar = vec[upper][left];
+
+	number = atoi(&firstChar);
+
+	for (int i = upper; i <= under; i++) {
+		for (int j = left; j <= right; j++) {
+			if (vec[i][j] != firstChar) {
+				number = -1;
+				break;
+			}
+		}
+		if (number == -1) {
+			break;
+		}
+	}
+	
+	return number;
+}
+
+void SetNumber(int upper, int under, int left, int right) {
+	int number = CheckAllNumberSame(upper, under, left, right);
+	if (number == -1) {
+		ans.append("(");
+		dfs(upper, under, left, right);
+		ans.append(")");
+	}
+	else if (number == 0) {
+		ans.append("0");
+	}
+	else if (number == 1) {
+		ans.append("1");
+	}
+}
+
+void dfs(int upper, int under, int left, int right) {
+	if (left >= right) {	//2x2 이상의 정사각형 내에서 찾는게 아닌 1x1내에서 찾는 경우는 따로확인 후 재귀를 끝내줘야 한다.
+		if (vec[upper][left] == '1') {
+			ans.append("1");
+		}
+		else {
+			ans.append("0");
+		}
+		return;
+	}
+
+	//왼쪽위, 오른쪽위, 왼쪽아래, 오른쪽아래를 차례대로 숫자가 다 동일한지 확인 후 정답의 string에 추가한다.
+	SetNumber(upper, (upper + under) / 2, left, (left + right) / 2);
+	SetNumber(upper, (upper + under) / 2, (left + right) / 2 + 1, right);
+	SetNumber((upper + under) / 2 + 1, under, left, (left + right) / 2);
+	SetNumber((upper + under) / 2 + 1, under, (left + right) / 2 + 1, right);
+}
+
+
+int main() {
+	
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		string temp;
+		cin >> temp;
+		vec.push_back(temp);
+	}
+
+	SetNumber(0, n - 1, 0, n - 1);
+
+	cout << ans;
+
+	return 0;
+}
