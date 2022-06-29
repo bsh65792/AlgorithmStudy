@@ -1,0 +1,49 @@
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+int main() {
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+
+	int distance = 0;
+	int n, m;
+	int j;
+
+	cin >> n >> m;
+	cin >> j;
+	queue<int> apple;
+
+	for (int i = 0; i < j; i++) {
+		int temp;
+		cin >> temp;
+		apple.push(temp);
+	}
+
+	int first = 1;
+	int last = m;
+
+	while (apple.size() != 0) {
+		int nowApple = apple.front();
+		apple.pop();
+
+		if (first <= nowApple && nowApple <= last) continue;
+
+		if (nowApple < first) {
+			last -= (first - nowApple);
+			distance += (first - nowApple);
+			first = nowApple;
+		}
+		else if (last < nowApple) {
+			first += (nowApple - last);
+			distance += (nowApple - last);
+			last = nowApple;
+		}
+	}
+
+	cout << distance;
+
+	return 0;
+}
