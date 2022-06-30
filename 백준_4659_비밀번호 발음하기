@@ -1,0 +1,77 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+int main() {
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+
+	vector<string> testCase;
+	string temp;
+	unordered_map<char, int> charMap;
+
+	//모음!
+	charMap['a'] = 1;
+	charMap['e'] = 1;
+	charMap['i'] = 1;
+	charMap['o'] = 1;
+	charMap['u'] = 1;
+	charMap['-1'] = -1;
+	charMap['-2'] = -2;
+
+	do {
+		cin >> temp;
+		testCase.push_back(temp);
+	} while (temp != "end");
+
+	testCase.erase(testCase.begin() + testCase.size() - 1);
+
+	for (int i = 0; i < testCase.size(); i++) {
+
+		char beforeChar = '-1';
+		char beforeBeforeChar = '-2';
+		bool isThereMoEum = false;
+		bool isAcceptable = true;
+
+		for (int j = 0; j < testCase[i].length(); j++) {
+
+			//모음이 있으면 OK
+			if (charMap[testCase[i][j]] == 1) {
+				isThereMoEum = true;
+			}
+
+			//두개 같은 문자가 나오면 안됨(e, o 제외)
+			if (beforeChar == testCase[i][j]) {
+				if (beforeChar != 'e' && beforeChar != 'o') {
+					isAcceptable = false;
+				}
+			}
+
+			//세 번 이상 자음 혹은 모음이 나오면 안됨
+			if ((charMap[beforeChar] == 0 && charMap[beforeBeforeChar] == 0 && charMap[testCase[i][j]] == 0) ||
+				(charMap[beforeChar] == 1 && charMap[beforeBeforeChar] == 1 && charMap[testCase[i][j]] == 1)){
+				isAcceptable = false;
+			}
+			beforeBeforeChar = beforeChar;
+			beforeChar = testCase[i][j];
+		}
+
+		if (isThereMoEum == false) {
+			isAcceptable = false;
+		}
+
+		if (isAcceptable == true) {
+			cout << "<" << testCase[i] << ">" << " is acceptable." << endl;
+		}
+		else {
+			cout << "<" << testCase[i] << ">" << " is not acceptable." << endl;
+		}
+		
+	}
+
+	return 0;
+}
