@@ -1,0 +1,60 @@
+#include <iostream>
+#include <unordered_map>
+#include <tuple>
+#include <algorithm>
+
+using namespace std;
+
+bool cmp(tuple<int, int, int> a, tuple<int, int, int> b) {
+	int numA, locA, cntA;
+	int numB, locB, cntB;
+	tie(numA, locA, cntA) = a;
+	tie(numB, locB, cntB) = b;
+	if (cntA == cntB) {
+		return locA < locB;
+	}
+
+	return cntA > cntB;
+}
+
+int main() {
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+
+	int n, c;
+	unordered_map<int, int> map;
+	vector<int> vec;
+
+	cin >> n >> c;
+
+	for (int i = 0; i < n; i++) {
+		int temp;
+		cin >> temp;
+		if (map[temp] == 0) {
+			vec.push_back(temp);
+		}
+		map[temp]++;
+	}
+
+	vector<tuple<int, int, int>> tupleVec;
+
+	for (int i = 0; i < vec.size(); i++) {
+		tupleVec.push_back({ vec[i], i, map[vec[i]] });
+	}
+
+	sort(tupleVec.begin(), tupleVec.end(), cmp);
+
+	for (int i = 0; i < tupleVec.size(); i++) {
+		int a, b, c;
+		tie(a, b, c) = tupleVec[i];
+
+		for (int j = 0; j < c; j++) {
+			cout << a << " ";
+		}
+
+	}
+
+
+	return 0;
+}
