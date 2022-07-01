@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+int h, w;
+char cloudMap[100][100] = { 0, };
+int intMap[100][100] = { 0, };
+int check[100][100] = { 0, };
+
+int main() {
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+
+	cin >> h >> w;
+
+
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < w; j++) {
+			char temp;
+			cin >> temp;
+			cloudMap[i][j] = temp;
+		}
+	}
+
+	for (int i = 0; i < h; i++) {
+		for (int j = w - 1; j >= 0; j--) {
+			if (cloudMap[i][j] == 'c') {
+				//구름 있는 자리 체크
+				check[i][j] = 1;
+				int y = j + 1;
+				while (y < w) {
+					if (check[i][y] == 1) break;
+					intMap[i][y] = intMap[i][y - 1] + 1;
+					check[i][y] = 1;
+					y++;
+				}
+			}
+		}
+	}
+
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < w; j++) {
+			if (check[i][j] == 0) {
+				intMap[i][j] = -1;
+			}
+		}
+	}
+
+	for (int i = 0; i < h; i++) {
+		for (int j = 0; j < w; j++) {
+			cout << intMap[i][j] << " ";
+		}
+		cout << "\n";
+	}
+
+	return 0;
+}
