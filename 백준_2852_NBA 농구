@@ -1,0 +1,113 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int ChangeHourToMinute(string timeString) {
+
+	int totalSecond = 0;
+	string minuteString = "";
+	string secondString = "";
+
+	while (timeString.length() > 0) {
+		if (timeString[0] == ':') {
+			timeString.erase(timeString.begin());
+			break;
+		}
+		else {
+			minuteString += timeString[0];
+			timeString.erase(timeString.begin());
+		}
+	}
+
+	secondString = timeString;
+
+	int minuteInt = stoi(minuteString);
+	int secondInt = stoi(secondString);
+
+	totalSecond = minuteInt * 60 + secondInt;
+	
+
+	return totalSecond;
+}
+
+
+int main() {
+
+	int n;
+	int firstTeamSecond = 0;
+	int secondTeamSecond = 0;
+	vector<pair<int, int>> scoreVec;
+
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		int teamNumber;
+		cin >> teamNumber;
+		string temp;
+		cin >> temp;
+
+		scoreVec.push_back({ teamNumber, ChangeHourToMinute(temp) });
+	}
+	scoreVec.push_back({ 3, 48 * 60 });
+
+	int score = 0;
+	int beforeTime = 0;
+
+	for (int i = 0; i < scoreVec.size(); i++) {
+		if (score > 0) {
+			firstTeamSecond += (scoreVec[i].second - beforeTime);
+		}
+		else if (score < 0) {
+			secondTeamSecond += (scoreVec[i].second - beforeTime);
+		}
+
+		if (scoreVec[i].first == 1) {
+			score++;
+		}
+		else if(scoreVec[i].first == 2){
+			score--;
+		}
+
+		beforeTime = scoreVec[i].second;
+	}
+
+	string minS, minS2;
+	string secS, secS2;
+
+	if (firstTeamSecond / 60 < 10) {
+		minS = "0" + to_string(firstTeamSecond / 60);
+	}
+	else {
+		minS = to_string(firstTeamSecond / 60);
+	}
+
+	if (secondTeamSecond / 60 < 10) {
+		minS2 = "0" + to_string(secondTeamSecond / 60);
+	}
+	else {
+		minS2 = to_string(secondTeamSecond / 60);
+	}
+
+	if (firstTeamSecond % 60 < 10) {
+		secS = "0" + to_string(firstTeamSecond % 60);
+	}
+	else {
+		secS = to_string(firstTeamSecond % 60);
+	}
+
+	if (secondTeamSecond % 60 < 10) {
+		secS2 = "0" + to_string(secondTeamSecond % 60);
+	}
+	else {
+		secS2 = to_string(secondTeamSecond % 60);
+	}
+
+	cout << minS << ":" << secS << endl;
+	cout << minS2 << ":" << secS2 << endl;
+	
+
+
+	return 0;
+}
