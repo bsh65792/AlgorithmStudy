@@ -1,0 +1,30 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+
+	int t;
+
+	cin >> t;
+
+	for (int testCase = 0; testCase < t; testCase++) {
+		int num;
+		int cnt = 0;
+		int five = 5;
+		cin >> num;
+
+		while (five <= num) {
+			cnt += num / five;
+			five *= 5;
+		}
+
+		cout << cnt << "\n";
+
+	}
+
+	return 0;
+}
