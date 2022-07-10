@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <stack>
+
+using namespace std;
+
+int main() {
+
+	vector<int> ans;
+
+	while (true) {
+		string line;
+		getline(cin, line);
+		stack<char> st;
+		bool flag = true;
+
+		if (line == ".") {
+			break;
+		}
+
+		for (int i = 0; i < (int)line.length(); i++) {
+			if (line[i] == '(' || line[i] == '[') {
+				st.push(line[i]);
+			}
+			else if (line[i] == ')' || line[i] == ']') {
+				if ((int)st.size() > 0 ) {
+					if (st.top() == '(' && line[i] == ')') {
+						st.pop();
+					}
+					else if (st.top() == '[' && line[i] == ']') {
+						st.pop();
+					}
+					else {
+						flag = false;
+					}
+				}
+				else {
+					st.push(line[i]);
+				}
+			}
+		}
+
+		if (st.size() > 0 || flag == false) {
+			ans.push_back(1);
+		}
+		else {
+			ans.push_back(0);
+		}
+
+	 }
+
+	for (int i = 0; i < ans.size(); i++) {
+		if (ans[i] == 0) {
+			cout << "yes" << "\n";
+		}
+		else if (ans[i] == 1) {
+			cout << "no" << "\n";
+		}
+	}
+
+	return 0;
+}
