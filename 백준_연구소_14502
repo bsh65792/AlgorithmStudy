@@ -1,0 +1,124 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+int dy[4] = { 0, 0, -1, 1 };
+int dx[4] = { 1, -1, 0, 0 };
+
+int map[10][10] = { 0, };
+int mapTemp[10][10] = { 0, };
+int n, m;
+int largestSafetyArea;
+vector<pair<int, int>> virusPosition;
+
+void CopyMap();
+void BFS(int y, int x);
+void BroadcastVirus();
+void SetWall(int cnt);
+void CheckSafetyArea();
+
+
+int main() {
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+
+
+	largestSafetyArea = 0;
+	cin >> n >> m;
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			int temp;
+			cin >> temp;
+			map[i][j] = temp;
+			if (temp == 2) {
+				virusPosition.push_back({ i, j });
+			}
+		}
+	}
+
+	SetWall(3);
+
+	cout << largestSafetyArea;
+
+	return 0;
+}
+
+
+void SetWall(int cnt) {
+	if (cnt == 0) {
+		CopyMap();
+		BroadcastVirus();
+		CheckSafetyArea();
+		return;
+	}
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (map[i][j] == 0) {
+				map[i][j] = 1;
+				SetWall(cnt - 1);
+				map[i][j] = 0;
+			}
+		}
+	}
+}
+
+
+
+void CopyMap() {
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			mapTemp[i][j] = map[i][j];
+		}
+	}
+}
+
+void BroadcastVirus() {
+	for (int i = 0; i < virusPosition.size(); i++) {
+		BFS(virusPosition[i].first, virusPosition[i].second);
+	}
+}
+
+void BFS(int y, int x) {
+	queue<pair<int, int>> q;
+	q.push({ y, x });
+
+	while (q.size() != 0) {
+		int thisY = q.front().first;
+		int thisX = q.front().second;
+		q.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int nextY = thisY + dy[i];
+			int nextX = thisX + dx[i];
+
+			if (nextY <= 0 || nextY > n || nextX <= 0 || nextX > m) continue;
+			if (mapTemp[nextY][nextX] == 2 || mapTemp[nextY][nextX] == 1) continue;
+
+			if (mapTemp[nextY][nextX] == 0) {
+				mapTemp[nextY][nextX] = 2;
+				q.push({ nextY, nextX });
+			}
+
+		}
+	}
+}
+
+void CheckSafetyArea() {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			if (mapTemp[i][j] == 0) {
+				cnt++;
+			}
+		}
+	}
+
+	if (cnt > largestSafetyArea) {
+		largestSafetyArea = cnt;
+	}
+}
