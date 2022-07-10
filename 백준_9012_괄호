@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+int main() {
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+
+	vector<int> ans;
+	
+	int n;
+
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		string temp;
+		cin >> temp;
+		stack<char> st;
+
+		for (int j = 0; j < temp.length(); j++) {
+			if (temp[j] == '(') {
+				st.push('(');
+			}
+			else if (temp[j] == ')') {
+				if (st.size() > 0) {
+					if (st.top() == '(') {
+						st.pop();
+					}
+					else if (st.top() == ')') {
+						st.push(')');
+					}
+				}
+				else {
+					st.push(')');
+				}
+				
+			}
+		}
+
+		if (st.size() > 0) {
+			ans.push_back(0);	//NO
+		}
+		else {
+			ans.push_back(1);	//YES
+		}
+
+	}
+
+	for (int i = 0; i < ans.size(); i++) {
+		if (ans[i] == 0) {
+			cout << "NO" << "\n";
+		}
+		else {
+			cout << "YES" << "\n";
+		}
+	}
+	
+	return 0;
+}
